@@ -34,12 +34,11 @@ RUN npm ci --only=production
 COPY prisma ./prisma/
 COPY prisma.config.ts ./
 
-# Copy built application from builder stage
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/generated ./generated
-
 # Generate Prisma Client for production
 RUN npx prisma generate
+
+# Copy built application from builder stage
+COPY --from=builder /app/dist ./dist
 
 # Expose port
 EXPOSE 3000
