@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   LayoutDashboard,
   BarChart3,
@@ -22,7 +24,7 @@ import {
 
 const menuItems = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { title: "Meu Time", icon: Users, href: "/teams" },
+  { title: "Meu Time", icon: Users, href: "/my-team" },
   { title: "Estatísticas", icon: BarChart3, href: "/stats" },
   { title: "Campeonatos", icon: Trophy, href: "/leagues" },
 ];
@@ -32,6 +34,8 @@ const configItems = [
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
@@ -44,11 +48,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
+                  <SidebarMenuButton asChild isActive={pathname === item.href}>
+                    <Link href={item.href}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
