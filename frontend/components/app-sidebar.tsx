@@ -22,13 +22,13 @@ import {
 
 const menuItems = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { title: "Estatísticas", icon: BarChart3, href: "/dashboard/stats" },
-  { title: "Times", icon: Users, href: "/dashboard/teams" },
-  { title: "Campeonatos", icon: Trophy, href: "/dashboard/leagues" },
+  { title: "Meu Time", icon: Users, href: "/teams" },
+  { title: "Estatísticas", icon: BarChart3, href: "/stats" },
+  { title: "Campeonatos", icon: Trophy, href: "/leagues" },
 ];
 
 const configItems = [
-  { title: "Configurações", icon: Settings, href: "/dashboard/settings" },
+  { title: "Configurações", icon: Settings, href: "/settings" },
 ];
 
 export function AppSidebar() {
@@ -43,23 +43,6 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.href}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Sistema</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {configItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.href}>
