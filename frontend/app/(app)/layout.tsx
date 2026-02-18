@@ -10,7 +10,7 @@ export default function AppLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div className="flex-1 bg-white p-6">{children}</div>
+        <div className="flex h-svh flex-col overflow-hidden bg-white p-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
