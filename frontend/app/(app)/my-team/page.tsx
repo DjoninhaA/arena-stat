@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Users, Target, HandHelping, Trophy } from "lucide-react";
+import { Users, Trophy } from "lucide-react";
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 
 const players = [
   { name: "Carlos Silva", number: 1, position: "Goleiro", goals: 0, assists: 0 },
@@ -23,7 +24,7 @@ const maxAssists = Math.max(...players.map((p) => p.assists));
 
 const metrics = [
   { label: "Jogadores", value: players.length, icon: Users },
-  { label: "Gols na Temporada", value: totalGoals, icon: Target },
+  { label: "Gols na Temporada", value: totalGoals, icon: SportsSoccerIcon },
   { label: "Vitórias", value: 7, icon: Trophy },
 ];
 
