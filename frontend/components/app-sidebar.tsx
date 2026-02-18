@@ -8,6 +8,7 @@ import {
   Users,
   Trophy,
   Settings,
+  PiggyBank,
 } from "lucide-react";
 
 import {
@@ -26,6 +27,7 @@ const menuItems = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { title: "Meu Time", icon: Users, href: "/my-team" },
   { title: "Estatísticas", icon: BarChart3, href: "/stats" },
+  { title: "Mensalidades", icon: PiggyBank, href: "/mensalidades" },
   { title: "Campeonatos", icon: Trophy, href: "/leagues" },
 ];
 
