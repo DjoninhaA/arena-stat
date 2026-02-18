@@ -38,7 +38,7 @@ export default function MyTeam() {
       </div>
 
       {/* Conteúdo principal */}
-      <div className="flex gap-6">
+      <div className="flex gap-6 mt-20">
         {/* Coluna esquerda: logo + métricas */}
         <div className="flex w-56 shrink-0 flex-col items-center gap-4">
           <Image
