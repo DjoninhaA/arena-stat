@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Arena Stat",
   description: "Arena Stat",
+  icons: {
+    icon: '/logo-arena.svg',
+  },
 };
 
 export default function RootLayout({
