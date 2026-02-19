@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePlayerDto } from './dto/create-player-dto';
+import { UpdatePlayerDto } from './dto/update-player-dto';
 import { Position } from '@prisma/client';
 
 @Injectable()
@@ -42,6 +43,22 @@ export class PlayerService {
 
     if (!player) {
       throw new NotFoundException('No players found for this position');
+    }
+  }
+
+  async update(id: string, dto: UpdatePlayerDto) {
+    try {
+      const player = await this.prisma.player.update({
+        where: { id },
+        data: {
+          ...(dto.name && { name: dto.name }),
+          ...(dto.position && { position: dto.position }),
+        },
+      });
+
+      return player;
+    } catch {
+      throw new NotFoundException('Player not found');
     }
   }
 
