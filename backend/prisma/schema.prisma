@@ -19,6 +19,16 @@ enum UserRole {
   PLAYER
 }
 
+enum Position {
+  GOALKEEPER
+  CENTER_BACK
+  RIGHT_BACK
+  LEFT_BACK
+  DEFENSIVE_MIDFIELDER
+  MIDFIELDER
+  STRIKER
+}
+
 model User {
   id    String   @id @default(uuid())
   name  String
@@ -44,9 +54,9 @@ model Team {
 }
 
 model Player {
-  id       String @id @default(uuid())
+  id       String   @id @default(uuid())
   name     String
-  position String
+  position Position
 
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
