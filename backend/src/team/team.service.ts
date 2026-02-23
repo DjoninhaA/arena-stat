@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTeamDto } from './dto/create-team-dto';
 
 @Injectable()
-export class TeamsService {
+export class TeamService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateTeamDto) {
@@ -46,5 +46,7 @@ export class TeamsService {
     if (!team) {
       throw new NotFoundException('This Team not exist');
     }
+
+    return team;
   }
 }

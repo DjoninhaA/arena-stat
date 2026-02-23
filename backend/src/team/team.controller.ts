@@ -1,10 +1,10 @@
 import { Body, Controller, Post, Get, Param } from '@nestjs/common';
-import { TeamsService } from './teams.service';
+import { TeamService } from './team.service';
 import { CreateTeamDto } from './dto/create-team-dto';
 
-@Controller('teams')
-export class TeamsController {
-  constructor(private readonly teamService: TeamsService) {}
+@Controller('team')
+export class TeamController {
+  constructor(private readonly teamService: TeamService) {}
 
   @Post()
   create(@Body() dto: CreateTeamDto) {
@@ -16,8 +16,8 @@ export class TeamsController {
     return this.teamService.findAll();
   }
 
-  @Get()
-  findById(@Param(':id') id: string) {
+  @Get(':id')
+  findById(@Param('id') id: string) {
     return this.teamService.findById(id);
   }
 }
