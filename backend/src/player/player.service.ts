@@ -44,6 +44,8 @@ export class PlayerService {
     if (!player) {
       throw new NotFoundException('No players found for this position');
     }
+
+    return player;
   }
 
   async update(id: string, dto: UpdatePlayerDto) {
