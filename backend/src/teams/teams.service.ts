@@ -31,7 +31,11 @@ export class TeamsService {
   }
 
   async findAll() {
-    return this.prisma.team.findMany();
+    return this.prisma.team.findMany({
+      include: {
+        players: true,
+      },
+    });
   }
 
   async findById(id: string) {
