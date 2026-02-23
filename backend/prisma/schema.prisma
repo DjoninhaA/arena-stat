@@ -42,11 +42,11 @@ model User {
 }
 
 model Team {
-  id             String @id @default(uuid())
+  id             String  @id @default(uuid())
   name           String
   primaryColor   String
   secondaryColor String
-  logo           Bytes?
+  logo           String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

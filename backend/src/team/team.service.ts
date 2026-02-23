@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTeamDto } from './dto/create-team-dto';
+import { UpdateTeamDto } from './dto/update-team-dto';
 
 @Injectable()
 export class TeamService {
@@ -24,7 +25,25 @@ export class TeamService {
         name: dto.name,
         primaryColor: dto.primaryColor,
         secondaryColor: dto.secondaryColor,
+        logo: dto.logo,
       },
+    });
+
+    return team;
+  }
+
+  async update(id: string, dto: UpdateTeamDto) {
+    const teamExists = await this.prisma.team.findUnique({
+      where: { id },
+    });
+
+    if (!teamExists) {
+      throw new BadRequestException('This team dont exists');
+    }
+
+    const team = await this.prisma.team.update({
+      where: { id },
+      data: dto,
     });
 
     return team;
