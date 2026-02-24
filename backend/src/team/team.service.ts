@@ -11,7 +11,7 @@ import { UpdateTeamDto } from './dto/update-team-dto';
 export class TeamService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateTeamDto) {
+  async create(dto: CreateTeamDto, file: Express.Multer.File | undefined) {
     const teamExists = await this.prisma.team.findFirst({
       where: { name: dto.name },
     });
@@ -25,7 +25,7 @@ export class TeamService {
         name: dto.name,
         primaryColor: dto.primaryColor,
         secondaryColor: dto.secondaryColor,
-        logo: dto.logo,
+        logo: file?.filename,
       },
     });
 
