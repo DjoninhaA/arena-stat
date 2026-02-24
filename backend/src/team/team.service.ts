@@ -32,7 +32,7 @@ export class TeamService {
     return team;
   }
 
-  async update(id: string, dto: UpdateTeamDto) {
+  async update(id: string, dto: UpdateTeamDto, file?: any) {
     const teamExists = await this.prisma.team.findUnique({
       where: { id },
     });
@@ -43,7 +43,10 @@ export class TeamService {
 
     const team = await this.prisma.team.update({
       where: { id },
-      data: dto,
+      data: {
+        ...dto,
+        logo: file?.filename ?? teamExists.logo,
+      },
     });
 
     return team;
