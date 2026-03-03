@@ -12,6 +12,7 @@ export class PlayerService {
     const player = await this.prisma.player.create({
       data: {
         name: dto.name,
+        number: dto.number,
         position: dto.position,
         team: {
           connect: { id: dto.teamId },

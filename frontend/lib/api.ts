@@ -24,15 +24,15 @@ export const positionLabel: Record<Position, string> = {
 export interface Player {
   id: string;
   name: string;
+  number?: number;
   position: Position;
   teamId: string;
   userId?: string;
   createdAt: string;
   updatedAt: string;
-  // ⚠️ Campos ainda não existem no backend:
-  // number?: number;   (camisa)
-  // goals?: number;    (gols)
-  // assists?: number;  (assistências)
+  // ⚠️ Campos pendentes (calculados via MatchEvent):
+  // goals?: number;
+  // assists?: number;
 }
 
 export interface Team {
@@ -75,6 +75,7 @@ export async function getPlayers(): Promise<Player[]> {
 
 export async function createPlayer(data: {
   name: string;
+  number?: number;
   position: Position;
   teamId: string;
 }): Promise<Player> {

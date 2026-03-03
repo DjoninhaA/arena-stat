@@ -141,8 +141,9 @@ export default function MyTeam() {
                     {players.map((player) => (
                       <tr key={player.id} className="hover:bg-gray-50">
                         <td className="px-6 py-3 font-medium text-gray-900">{player.name}</td>
-                        {/* ⚠️ Campo "number" não existe no backend ainda */}
-                        <td className="px-6 py-3 text-center text-gray-400">—</td>
+                        <td className="px-6 py-3 text-center text-gray-500">
+                          {player.number ?? <span className="text-gray-300">—</span>}
+                        </td>
                         <td className="px-6 py-3 text-gray-500">
                           {positionLabel[player.position] ?? player.position}
                         </td>

@@ -14,6 +14,7 @@ interface Props {
 
 export default function AddPlayerModal({ teamId, onAdded, onClose }: Props) {
   const [name, setName] = useState("");
+  const [number, setNumber] = useState<string>("");
   const [position, setPosition] = useState<Position>("STRIKER");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +28,12 @@ export default function AddPlayerModal({ teamId, onAdded, onClose }: Props) {
     setError(null);
     setLoading(true);
     try {
-      const player = await createPlayer({ name: name.trim(), position, teamId });
+      const player = await createPlayer({
+        name: name.trim(),
+        number: number !== "" ? Number(number) : undefined,
+        position,
+        teamId,
+      });
       onAdded(player);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao adicionar jogador.");
@@ -69,6 +75,20 @@ export default function AddPlayerModal({ teamId, onAdded, onClose }: Props) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Carlos Silva"
               autoFocus
+              className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+
+          {/* Número da camisa */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-gray-700">Número da Camisa</label>
+            <input
+              type="number"
+              min={1}
+              max={99}
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              placeholder="Ex: 10"
               className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>
