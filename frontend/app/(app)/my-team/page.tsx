@@ -158,7 +158,7 @@ export default function MyTeam() {
 
               {/* Campo de futebol */}
               <div className="flex-1">
-                <FootballPitch />
+                <FootballPitch players={players} />
               </div>
             </div>
           </div>
