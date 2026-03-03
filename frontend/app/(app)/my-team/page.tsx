@@ -6,6 +6,7 @@ import { Users, Trophy, UserPlus } from "lucide-react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { getTeams, teamLogoUrl, positionLabel, type Team, type Player } from "@/lib/api";
 import AddPlayerModal from "@/components/add-player-modal";
+import { FootballPitch } from "@/components/football-pitch";
 
 export default function MyTeam() {
   const [team, setTeam] = useState<Team | null>(null);
@@ -111,7 +112,8 @@ export default function MyTeam() {
               </div>
             </div>
 
-            {/* Coluna direita: tabela */}
+            {/* Coluna direita: tabela + campo lado a lado */}
+            <div className="flex flex-1 gap-4">
             <div className="flex-1 rounded-lg border border-gray-200">
               {players.length === 0 ? (
                 <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
@@ -152,6 +154,12 @@ export default function MyTeam() {
                   </tbody>
                 </table>
               )}
+            </div>
+
+              {/* Campo de futebol */}
+              <div className="w-52 shrink-0">
+                <FootballPitch />
+              </div>
             </div>
           </div>
         )}
