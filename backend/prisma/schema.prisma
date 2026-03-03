@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../node_modules/.prisma/client"
@@ -12,6 +9,8 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
 
 enum UserRole {
   ADMIN
@@ -28,6 +27,8 @@ enum Position {
   MIDFIELDER
   STRIKER
 }
+
+// ─── Models ───────────────────────────────────────────────────────────────────
 
 model User {
   id    String   @id @default(uuid())
@@ -52,11 +53,13 @@ model Team {
   updatedAt DateTime @updatedAt
 
   players Player[]
+  matches Match[]
 }
 
 model Player {
   id       String   @id @default(uuid())
   name     String
+  number   Int?
   position Position
 
   teamId String
@@ -65,6 +68,43 @@ model Player {
   userId String?
   user   User?   @relation(fields: [userId], references: [id])
 
+  goals        MatchEvent[] @relation("GoalRelation")
+  assists      MatchEvent[] @relation("AssistRelation")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Match {
+  id String @id @default(uuid())
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  opponentName  String
+
+  teamScore     Int      @default(0)
+  opponentScore Int      @default(0)
+
+  date          DateTime @default(now())
+
+  events MatchEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MatchEvent {
+  id String @id @default(uuid())
+
+  matchId String
+  match   Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  scorerId String
+  scorer   Player @relation("GoalRelation", fields: [scorerId], references: [id], onDelete: Cascade)
+
+  assisterId String?
+  assister   Player? @relation("AssistRelation", fields: [assisterId], references: [id])
+
+  createdAt DateTime @default(now())
 }
