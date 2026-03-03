@@ -51,6 +51,7 @@ export default async function MyTeam() {
                 alt="Logo do time"
                 width={96}
                 height={96}
+                unoptimized
                 className="rounded-full"
                 onError={undefined}
               />

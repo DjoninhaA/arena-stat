@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -70,5 +70,25 @@ export async function getTeamById(id: string): Promise<Team> {
 export async function getPlayers(): Promise<Player[]> {
   const res = await fetch(`${API_URL}/player`, { cache: "no-store" });
   if (!res.ok) throw new Error("Falha ao buscar jogadores");
+  return res.json();
+}
+
+export async function createTeam(data: {
+  name: string;
+  primaryColor: string;
+  secondaryColor: string;
+  logo?: File;
+}): Promise<Team> {
+  const form = new FormData();
+  form.append("name", data.name);
+  form.append("primaryColor", data.primaryColor);
+  form.append("secondaryColor", data.secondaryColor);
+  if (data.logo) form.append("logo", data.logo);
+
+  const res = await fetch(`${API_URL}/team`, { method: "POST", body: form });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? "Falha ao criar time");
+  }
   return res.json();
 }
