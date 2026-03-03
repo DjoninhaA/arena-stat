@@ -64,7 +64,7 @@ export default function EditTeamModal({ team, onUpdated, onClose }: Props) {
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+            className="cursor-pointer rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
           >
             <X className="h-5 w-5" />
           </button>
@@ -87,7 +87,7 @@ export default function EditTeamModal({ team, onUpdated, onClose }: Props) {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-xs text-primary underline-offset-2 hover:underline"
+              className="cursor-pointer text-xs text-primary underline-offset-2 hover:underline"
             >
               {logoPreview ? "Trocar logo" : "Adicionar logo"}
             </button>
@@ -157,14 +157,14 @@ export default function EditTeamModal({ team, onUpdated, onClose }: Props) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 active:scale-95"
+              className="cursor-pointer flex-1 rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 active:scale-95"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95 disabled:opacity-60"
+              className="cursor-pointer flex-1 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Salvando..." : "Salvar"}
             </button>

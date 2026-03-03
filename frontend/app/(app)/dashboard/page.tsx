@@ -151,7 +151,7 @@ export default function DashboardPage() {
           </div>
           <button
             onClick={() => setEditOpen(true)}
-            className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95"
+            className="cursor-pointer flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95"
           >
             <Pencil className="h-4 w-4" />
             Editar Time

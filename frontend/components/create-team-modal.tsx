@@ -88,7 +88,7 @@ export default function CreateTeamModal({ onCreated }: Props) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-xs text-primary underline-offset-2 hover:underline"
+                className="cursor-pointer text-xs text-primary underline-offset-2 hover:underline"
               >
                 {logoPreview ? "Trocar logo" : "Adicionar logo"}
               </button>
@@ -96,7 +96,7 @@ export default function CreateTeamModal({ onCreated }: Props) {
                 <button
                   type="button"
                   onClick={removeLogo}
-                  className="flex items-center gap-0.5 text-xs text-red-500 underline-offset-2 hover:underline"
+                  className="cursor-pointer flex items-center gap-0.5 text-xs text-red-500 underline-offset-2 hover:underline"
                 >
                   <X className="h-3 w-3" />
                   Remover
@@ -169,7 +169,7 @@ export default function CreateTeamModal({ onCreated }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="mt-1 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95 disabled:opacity-60"
+            className="cursor-pointer mt-1 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Criando..." : "Criar time"}
           </button>

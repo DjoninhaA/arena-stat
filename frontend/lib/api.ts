@@ -73,6 +73,23 @@ export async function getPlayers(): Promise<Player[]> {
   return res.json();
 }
 
+export async function createPlayer(data: {
+  name: string;
+  position: Position;
+  teamId: string;
+}): Promise<Player> {
+  const res = await fetch(`${API_URL}/player`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? "Falha ao adicionar jogador");
+  }
+  return res.json();
+}
+
 export async function updateTeam(
   id: string,
   data: { name?: string; primaryColor?: string; secondaryColor?: string; logo?: File }
