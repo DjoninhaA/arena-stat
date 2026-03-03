@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Users,
   Trophy,
@@ -14,20 +14,12 @@ import {
 } from "lucide-react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import DashboardCharts from "./charts";
+import { getTeams, teamLogoUrl, type Team } from "@/lib/api";
 
-// ─── Mock data ────────────────────────────────────────────────────────────────
+// ─── Filtros (⚠️ temporadas e competições ainda não existem no backend) ────────
 
 const seasons = ["2024", "2023", "2022"];
 const competitions = ["Todas", "Campeonato Estadual", "Copa Regional", "Liga Municipal"];
-
-const stats = [
-  { label: "Jogadores",      value: 11,    icon: Users,            change: 0,   color: "bg-blue-50 text-blue-600"        },
-  { label: "Gols Marcados",  value: 42,    icon: SportsSoccerIcon, change: 12,  color: "bg-green-50 text-green-600"     },
-  { label: "Assistências",   value: 37,    icon: Handshake,        change: 8,   color: "bg-purple-50 text-purple-600"   },
-  { label: "Vitórias",       value: 7,     icon: Trophy,           change: 16,  color: "bg-yellow-50 text-yellow-600"   },
-  { label: "Derrotas",       value: 3,     icon: Target,           change: -5,  color: "bg-red-50 text-red-600"         },
-  { label: "Aproveitamento", value: "70%", icon: TrendingUp,       change: 4,   color: "bg-emerald-50 text-emerald-600" },
-];
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -46,7 +38,15 @@ function Select({ options, value, onChange }: { options: string[]; value: string
   );
 }
 
-function StatCard({ stat, index }: { stat: (typeof stats)[0]; index: number }) {
+type StatItem = {
+  label: string;
+  value: number | string;
+  icon: React.ElementType;
+  change: number;
+  color: string;
+};
+
+function StatCard({ stat, index }: { stat: StatItem; index: number }) {
   const isPositive = stat.change >= 0;
   return (
     <div
@@ -77,6 +77,26 @@ function StatCard({ stat, index }: { stat: (typeof stats)[0]; index: number }) {
 export default function DashboardPage() {
   const [season, setSeason] = useState("2024");
   const [competition, setCompetition] = useState("Todas");
+  const [team, setTeam] = useState<Team | null>(null);
+
+  useEffect(() => {
+    getTeams()
+      .then((teams) => setTeam(teams[0] ?? null))
+      .catch(() => setTeam(null));
+  }, []);
+
+  const playerCount = team?.players?.length ?? 0;
+  const logo = teamLogoUrl(team?.logo);
+
+  const stats: StatItem[] = [
+    { label: "Jogadores",      value: playerCount, icon: Users,            change: 0,  color: "bg-blue-50 text-blue-600"        },
+    // ⚠️ Os campos abaixo dependem de endpoints ainda não criados no backend:
+    { label: "Gols Marcados",  value: "—",         icon: SportsSoccerIcon, change: 0,  color: "bg-green-50 text-green-600"     },
+    { label: "Assistências",   value: "—",         icon: Handshake,        change: 0,  color: "bg-purple-50 text-purple-600"   },
+    { label: "Vitórias",       value: "—",         icon: Trophy,           change: 0,  color: "bg-yellow-50 text-yellow-600"   },
+    { label: "Derrotas",       value: "—",         icon: Target,           change: 0,  color: "bg-red-50 text-red-600"         },
+    { label: "Aproveitamento", value: "—",         icon: TrendingUp,       change: 0,  color: "bg-emerald-50 text-emerald-600" },
+  ];
 
   return (
     <div className="flex flex-col gap-6 overflow-y-auto pt-6 pb-4">
@@ -86,16 +106,28 @@ export default function DashboardPage() {
         <div className="flex items-center gap-5">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary/10 blur-md" />
-            <Image
-              src="/logo-udinese.png"
-              alt="Escudo do time"
-              width={72}
-              height={72}
-              className="relative rounded-full ring-2 ring-primary/20"
-            />
+            {logo ? (
+              <Image
+                src={logo}
+                alt="Escudo do time"
+                width={72}
+                height={72}
+                className="relative rounded-full ring-2 ring-primary/20"
+              />
+            ) : (
+              <Image
+                src="/logo-udinese.png"
+                alt="Escudo do time"
+                width={72}
+                height={72}
+                className="relative rounded-full ring-2 ring-primary/20"
+              />
+            )}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Udinese Fut7</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {team?.name ?? "Carregando..."}
+            </h1>
             <div className="mt-1 flex items-center gap-3">
               <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-0.5 text-xs font-semibold text-primary">
                 Temporada {season}
