@@ -1,30 +1,30 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { Users, Trophy } from "lucide-react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { getTeams, teamLogoUrl, positionLabel, type Team } from "@/lib/api";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+export default function MyTeam() {
+  const [team, setTeam] = useState<Team | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
-const metrics = (team: Team) => [
-  { label: "Jogadores",    value: team.players?.length ?? 0, icon: Users           },
-  { label: "Gols Marcados", value: "—",                      icon: SportsSoccerIcon }, // ⚠️ backend pendente
-  { label: "Vitórias",     value: "—",                       icon: Trophy           }, // ⚠️ backend pendente
-];
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
-export default async function MyTeam() {
-  let team: Team | null = null;
-
-  try {
-    const teams = await getTeams();
-    team = teams[0] ?? null;
-  } catch {
-    // backend offline ou sem times cadastrados
-  }
+  useEffect(() => {
+    getTeams()
+      .then((teams) => setTeam(teams[0] ?? null))
+      .catch(() => setTeam(null))
+      .finally(() => setLoaded(true));
+  }, []);
 
   const players = team?.players ?? [];
   const logo = teamLogoUrl(team?.logo);
+
+  const metrics = [
+    { label: "Jogadores",    value: players.length, icon: Users           },
+    { label: "Gols Marcados", value: "—",            icon: SportsSoccerIcon }, // ⚠️ backend pendente
+    { label: "Vitórias",     value: "—",             icon: Trophy           }, // ⚠️ backend pendente
+  ];
 
   return (
     <div className="flex h-full flex-col gap-8">
@@ -34,10 +34,15 @@ export default async function MyTeam() {
         <p className="mt-1 text-gray-500">Gerencie seu time aqui</p>
       </div>
 
+      {/* Carregando */}
+      {!loaded && (
+        <p className="text-sm text-gray-400">Carregando...</p>
+      )}
+
       {/* Sem time cadastrado */}
-      {!team && (
+      {loaded && !team && (
         <p className="text-sm text-gray-400">
-          Nenhum time cadastrado ainda. Crie um time no backend para começar.
+          Nenhum time cadastrado ainda. Crie um time no dashboard para começar.
         </p>
       )}
 
@@ -53,7 +58,6 @@ export default async function MyTeam() {
                 height={96}
                 unoptimized
                 className="rounded-full"
-                onError={undefined}
               />
             ) : (
               <div className="h-24 w-24 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs text-center px-2">
@@ -63,7 +67,7 @@ export default async function MyTeam() {
             <h2 className="text-xl font-bold text-gray-900">{team.name}</h2>
 
             <div className="flex w-full flex-col gap-3">
-              {metrics(team).map((metric) => (
+              {metrics.map((metric) => (
                 <div
                   key={metric.label}
                   className="flex items-center justify-center rounded-lg border border-gray-200 bg-white p-3 shadow-sm"
@@ -100,9 +104,7 @@ export default async function MyTeam() {
                 <tbody className="divide-y divide-gray-200">
                   {players.map((player) => (
                     <tr key={player.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-3 font-medium text-gray-900">
-                        {player.name}
-                      </td>
+                      <td className="px-6 py-3 font-medium text-gray-900">{player.name}</td>
                       {/* ⚠️ Campo "number" não existe no backend ainda */}
                       <td className="px-6 py-3 text-center text-gray-400">—</td>
                       <td className="px-6 py-3 text-gray-500">

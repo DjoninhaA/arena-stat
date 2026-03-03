@@ -16,6 +16,7 @@ import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import DashboardCharts from "./charts";
 import { getTeams, teamLogoUrl, type Team } from "@/lib/api";
 import CreateTeamModal from "@/components/create-team-modal";
+import EditTeamModal from "@/components/edit-team-modal";
 
 // ─── Filtros (⚠️ temporadas e competições ainda não existem no backend) ────────
 
@@ -80,6 +81,7 @@ export default function DashboardPage() {
   const [competition, setCompetition] = useState("Todas");
   const [team, setTeam] = useState<Team | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
     getTeams()
@@ -106,6 +108,13 @@ export default function DashboardPage() {
       {/* Modal de criação de time — abre automaticamente quando não há time */}
       {loaded && !team && (
         <CreateTeamModal onCreated={(created) => setTeam(created)} />
+      )}
+      {editOpen && team && (
+        <EditTeamModal
+          team={team}
+          onUpdated={(updated) => { setTeam(updated); setEditOpen(false); }}
+          onClose={() => setEditOpen(false)}
+        />
       )}
 
       <div className="flex flex-col gap-6 overflow-y-auto pt-6 pb-4">
@@ -140,7 +149,10 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <button className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95">
+          <button
+            onClick={() => setEditOpen(true)}
+            className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95"
+          >
             <Pencil className="h-4 w-4" />
             Editar Time
           </button>

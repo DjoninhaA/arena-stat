@@ -73,6 +73,24 @@ export async function getPlayers(): Promise<Player[]> {
   return res.json();
 }
 
+export async function updateTeam(
+  id: string,
+  data: { name?: string; primaryColor?: string; secondaryColor?: string; logo?: File }
+): Promise<Team> {
+  const form = new FormData();
+  if (data.name) form.append("name", data.name);
+  if (data.primaryColor) form.append("primaryColor", data.primaryColor);
+  if (data.secondaryColor) form.append("secondaryColor", data.secondaryColor);
+  if (data.logo) form.append("logo", data.logo);
+
+  const res = await fetch(`${API_URL}/team/${id}`, { method: "PUT", body: form });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? "Falha ao atualizar time");
+  }
+  return res.json();
+}
+
 export async function createTeam(data: {
   name: string;
   primaryColor: string;
