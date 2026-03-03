@@ -51,11 +51,11 @@ export function FootballPitch() {
       </div>
 
       {/* Pitch */}
-      <div className="flex justify-center bg-[#1e6b32] px-3 py-3">
+      <div className="flex justify-center bg-[#1e6b32] px-4 py-4">
         <svg
           viewBox={`0 0 ${svgW} ${svgH}`}
-          className="w-full"
-          style={{ display: "block" }}
+          className="h-full w-auto"
+          style={{ display: "block", maxHeight: "460px" }}
         >
           {/* ── Grass stripes (horizontal) ── */}
           {Array.from({ length: stripes }, (_, i) => (

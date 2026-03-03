@@ -114,7 +114,7 @@ export default function MyTeam() {
 
             {/* Coluna direita: tabela + campo lado a lado */}
             <div className="flex flex-1 gap-4">
-            <div className="flex-1 rounded-lg border border-gray-200">
+            <div className="flex-2 min-w-0 rounded-lg border border-gray-200">
               {players.length === 0 ? (
                 <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
                   <p className="text-sm text-gray-400">Nenhum jogador cadastrado neste time.</p>
@@ -157,7 +157,7 @@ export default function MyTeam() {
             </div>
 
               {/* Campo de futebol */}
-              <div className="w-52 shrink-0">
+              <div className="flex-1">
                 <FootballPitch />
               </div>
             </div>
