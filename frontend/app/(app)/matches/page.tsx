@@ -33,22 +33,34 @@ function MatchCard({ match, teamName }: { match: Match; teamName: string }) {
   const { label, cls } = resultConfig[result];
 
   return (
-    <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
-      <div className="flex flex-col gap-1">
+    <div className="rounded-xl border border-gray-200 bg-white px-6 py-4 shadow-sm transition hover:border-primary/30 hover:shadow-md cursor-pointer">
+      {/* Date row */}
+      <div className="mb-3 flex items-center justify-between">
         <span className="text-xs capitalize text-gray-400">{dateStr} • {timeStr}</span>
-        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
-          <span>{teamName}</span>
-          <span className="text-xs font-normal text-gray-400">vs</span>
-          <span>{match.opponentName}</span>
-        </div>
+        <span className={`rounded-full px-3 py-0.5 text-xs font-semibold ${cls}`}>{label}</span>
       </div>
-      <div className="flex items-center gap-4">
-        {result !== "upcoming" && (
-          <span className="text-lg font-bold text-gray-900">
-            {match.teamScore} – {match.opponentScore}
-          </span>
-        )}
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${cls}`}>{label}</span>
+
+      {/* Match row: Team — Score — Opponent */}
+      <div className="flex items-center justify-center gap-4">
+        <span className="w-36 text-right text-sm font-bold text-gray-900">{teamName}</span>
+
+        <div className="flex items-center gap-3">
+          {result !== "upcoming" ? (
+            <>
+              <span className="min-w-8 rounded-lg bg-gray-100 px-3 py-1 text-center text-xl font-black text-gray-900">
+                {match.teamScore}
+              </span>
+              <span className="text-sm font-light text-gray-400">–</span>
+              <span className="min-w-8 rounded-lg bg-gray-100 px-3 py-1 text-center text-xl font-black text-gray-900">
+                {match.opponentScore}
+              </span>
+            </>
+          ) : (
+            <span className="text-sm font-light text-gray-400">vs</span>
+          )}
+        </div>
+
+        <span className="w-36 text-left text-sm font-bold text-gray-900">{match.opponentName}</span>
       </div>
     </div>
   );
