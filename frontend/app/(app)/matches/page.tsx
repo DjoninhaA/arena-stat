@@ -33,7 +33,7 @@ function MatchCard({ match, teamName }: { match: Match; teamName: string }) {
   const { label, cls } = resultConfig[result];
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white px-6 py-4 shadow-sm transition hover:border-primary/30 hover:shadow-md cursor-pointer">
+    <div className="w-[70%] rounded-xl border border-gray-200 bg-white px-6 py-4 shadow-sm transition hover:border-primary/30 hover:shadow-md cursor-pointer">
       {/* Date row */}
       <div className="mb-3 flex items-center justify-between">
         <span className="text-xs capitalize text-gray-400">{dateStr} • {timeStr}</span>
@@ -138,7 +138,7 @@ export default function MatchesPage() {
         <div className="flex flex-col gap-6 overflow-y-auto">
           {/* Upcoming */}
           <section>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+            <h2 className="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-gray-500">
               Próximos Jogos
             </h2>
             {upcoming.length === 0 ? (
@@ -155,7 +155,7 @@ export default function MatchesPage() {
                 )}
               </div>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 items-center">
                 {upcoming.map((m) => <MatchCard key={m.id} match={m} teamName={team?.name ?? "Meu Time"} />)}
               </div>
             )}
@@ -163,7 +163,7 @@ export default function MatchesPage() {
 
           {/* Past */}
           <section>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+            <h2 className="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-gray-500">
               Partidas Recentes
             </h2>
             {past.length === 0 ? (
@@ -171,7 +171,7 @@ export default function MatchesPage() {
                 <p className="text-sm text-gray-400">Nenhuma partida registrada ainda</p>
               </div>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 items-center">
                 {past.map((m) => <MatchCard key={m.id} match={m} teamName={team?.name ?? "Meu Time"} />)}
               </div>
             )}
