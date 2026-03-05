@@ -53,6 +53,17 @@ export function teamLogoUrl(logo?: string): string | null {
   return `${API_URL}/uploads/logos/${logo}`;
 }
 
+export interface Match {
+  id: string;
+  teamId: string;
+  opponentName: string;
+  teamScore: number;
+  opponentScore: number;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ─── API calls ────────────────────────────────────────────────────────────────
 
 export async function getTeams(): Promise<Team[]> {
@@ -105,6 +116,29 @@ export async function updateTeam(
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err?.message ?? "Falha ao atualizar time");
+  }
+  return res.json();
+}
+
+export async function getMatches(teamId: string): Promise<Match[]> {
+  const res = await fetch(`${API_URL}/match/team/${teamId}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Falha ao buscar partidas");
+  return res.json();
+}
+
+export async function createMatch(data: {
+  teamId: string;
+  opponentName: string;
+  date: string;
+}): Promise<Match> {
+  const res = await fetch(`${API_URL}/match`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? "Falha ao agendar partida");
   }
   return res.json();
 }
