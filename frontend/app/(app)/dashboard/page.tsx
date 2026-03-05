@@ -12,6 +12,7 @@ import {
   Pencil,
   ChevronDown,
 } from "lucide-react";
+import Link from "next/link";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { getTeams, teamLogoUrl, type Team } from "@/lib/api";
 import CreateTeamModal from "@/components/create-team-modal";
@@ -148,13 +149,22 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <button
-            onClick={() => setEditOpen(true)}
-            className="cursor-pointer flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95"
-          >
-            <Pencil className="h-4 w-4" />
-            Editar Time
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/my-team"
+              className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-95"
+            >
+              <Users className="h-4 w-4" />
+              Ver Time
+            </Link>
+            <button
+              onClick={() => setEditOpen(true)}
+              className="cursor-pointer flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95"
+            >
+              <Pencil className="h-4 w-4" />
+              Editar Time
+            </button>
+          </div>
         </div>
 
         {/* Filtros */}

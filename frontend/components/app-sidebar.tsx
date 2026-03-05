@@ -26,9 +26,9 @@ import {
 const menuItems = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { title: "Meu Time", icon: Users, href: "/my-team" },
+  { title: "Partidas", icon: Trophy, href: "/matches" },
+  { title: "Mensalidades", icon: PiggyBank, href: "/monthly" },
   { title: "Estatísticas", icon: BarChart3, href: "/stats" },
-  { title: "Mensalidades", icon: PiggyBank, href: "/mensalidades" },
-  { title: "Campeonatos", icon: Trophy, href: "/leagues" },
 ];
 
 const configItems = [
