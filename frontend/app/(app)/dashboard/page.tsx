@@ -13,7 +13,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import DashboardCharts from "./charts";
 import { getTeams, teamLogoUrl, type Team } from "@/lib/api";
 import CreateTeamModal from "@/components/create-team-modal";
 import EditTeamModal from "@/components/edit-team-modal";
@@ -169,9 +168,6 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {stats.map((stat, i) => <StatCard key={stat.label} stat={stat} index={i} />)}
         </div>
-
-        {/* Gráficos */}
-        <DashboardCharts />
 
       </div>
     </>
