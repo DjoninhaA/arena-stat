@@ -120,25 +120,25 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-6 overflow-y-auto pt-6 pb-4">
 
         {/* Header do time */}
-        <div className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-5">
-            <div className="relative">
+        <div className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex items-center gap-4">
+            <div className="relative shrink-0">
               <div className="absolute inset-0 rounded-full bg-primary/10 blur-md" />
               {logo ? (
                 <Image
                   src={logo}
                   alt="Escudo do time"
-                  width={72}
-                  height={72}
+                  width={64}
+                  height={64}
                   unoptimized
-                  className="relative rounded-full ring-2 ring-primary/20"
+                  className="relative h-14 w-14 rounded-full ring-2 ring-primary/20 sm:h-18 sm:w-18"
                 />
               ) : (
-                <div className="relative h-[72px] w-[72px] rounded-full bg-gray-100 ring-2 ring-primary/20" />
+                <div className="relative h-14 w-14 rounded-full bg-gray-100 ring-2 ring-primary/20 sm:h-18 sm:w-18" />
               )}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
                 {!loaded ? "Carregando..." : (team?.name ?? "Meu Time")}
               </h1>
               <div className="mt-1 flex items-center gap-3">
@@ -152,14 +152,14 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/my-team"
-              className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-95"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-95 sm:flex-none"
             >
               <Users className="h-4 w-4" />
               Ver Time
             </Link>
             <button
               onClick={() => setEditOpen(true)}
-              className="cursor-pointer flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95"
+              className="cursor-pointer flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:border-gray-300 active:scale-95 sm:flex-none"
             >
               <Pencil className="h-4 w-4" />
               Editar Time
@@ -168,7 +168,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Filtros */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm font-medium text-gray-500">Filtrar por:</span>
           <Select options={seasons} value={season} onChange={setSeason} />
           <Select options={competitions} value={competition} onChange={setCompetition} />

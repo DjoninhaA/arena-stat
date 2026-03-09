@@ -33,7 +33,7 @@ function MatchCard({ match, teamName }: { match: Match; teamName: string }) {
   const { label, cls } = resultConfig[result];
 
   return (
-    <div className="w-[70%] rounded-xl border border-gray-200 bg-white px-6 py-4 shadow-sm transition hover:border-primary/30 hover:shadow-md cursor-pointer">
+    <div className="w-full rounded-xl border border-gray-200 bg-white px-4 py-4 shadow-sm transition hover:border-primary/30 hover:shadow-md cursor-pointer sm:px-6">
       {/* Date row */}
       <div className="mb-3 flex items-center justify-between">
         <span className="text-xs capitalize text-gray-400">{dateStr} • {timeStr}</span>
@@ -41,17 +41,17 @@ function MatchCard({ match, teamName }: { match: Match; teamName: string }) {
       </div>
 
       {/* Match row: Team — Score — Opponent */}
-      <div className="flex items-center justify-center gap-4">
-        <span className="w-36 text-right text-sm font-bold text-gray-900">{teamName}</span>
+      <div className="flex items-center justify-center gap-2 sm:gap-4">
+        <span className="flex-1 truncate text-right text-sm font-bold text-gray-900">{teamName}</span>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {result !== "upcoming" ? (
             <>
-              <span className="min-w-8 rounded-lg bg-gray-100 px-3 py-1 text-center text-xl font-black text-gray-900">
+              <span className="min-w-8 rounded-lg bg-gray-100 px-2 py-1 text-center text-lg font-black text-gray-900 sm:px-3 sm:text-xl">
                 {match.teamScore}
               </span>
               <span className="text-sm font-light text-gray-400">–</span>
-              <span className="min-w-8 rounded-lg bg-gray-100 px-3 py-1 text-center text-xl font-black text-gray-900">
+              <span className="min-w-8 rounded-lg bg-gray-100 px-2 py-1 text-center text-lg font-black text-gray-900 sm:px-3 sm:text-xl">
                 {match.opponentScore}
               </span>
             </>
@@ -60,7 +60,7 @@ function MatchCard({ match, teamName }: { match: Match; teamName: string }) {
           )}
         </div>
 
-        <span className="w-36 text-left text-sm font-bold text-gray-900">{match.opponentName}</span>
+        <span className="flex-1 truncate text-left text-sm font-bold text-gray-900">{match.opponentName}</span>
       </div>
     </div>
   );
@@ -119,18 +119,18 @@ export default function MatchesPage() {
 
       <div className="flex h-full flex-col gap-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Partidas</h1>
-            <p className="mt-1 text-gray-500">Histórico e próximos jogos</p>
+            <p className="mt-1 text-sm text-gray-500">Histórico e próximos jogos</p>
           </div>
           {team && (
             <button
               onClick={() => setAddOpen(true)}
-              className="cursor-pointer flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95"
+              className="cursor-pointer flex shrink-0 items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95 sm:px-4"
             >
               <Plus className="h-4 w-4" />
-              Agendar Partida
+              <span>Agendar Partida</span>
             </button>
           )}
         </div>
