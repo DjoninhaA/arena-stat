@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMatchDto } from './dto/create-match-dto';
 
@@ -19,5 +19,19 @@ export class MatchService {
 
   async findAll() {
     return this.prisma.match.findMany();
+  }
+
+  async remove(id: string) {
+    try {
+      await this.prisma.match.delete({
+        where: { id },
+      });
+
+      return {
+        message: 'Match deleted successfully',
+      };
+    } catch {
+      throw new NotFoundException('Match not found');
+    }
   }
 }

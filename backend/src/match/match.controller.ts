@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Get } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get, Delete } from '@nestjs/common';
 import { MatchService } from './match.service';
 import { CreateMatchDto } from './dto/create-match-dto';
 
@@ -14,5 +14,10 @@ export class MatchController {
   @Get()
   findAll() {
     return this.MatchService.findAll();
+  }
+
+  @Delete()
+  remove(@Param('id') id: string) {
+    return this.MatchService.remove(id);
   }
 }
