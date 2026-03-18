@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { MatchService } from './match.service';
 import { CreateMatchDto } from './dto/create-match-dto';
+import { updateMatchDto } from './dto/update-match-dto';
 
 @Controller('match')
 export class MatchController {
@@ -26,7 +27,7 @@ export class MatchController {
 
   @Patch()
   update(@Param('id') id: string, @Body() data: updateMatchDto) {
-    return this.userService.update(id, data);
+    return this.MatchService.update(id, data);
   }
 
   @Delete()
