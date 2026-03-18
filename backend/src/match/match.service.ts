@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMatchDto } from './dto/create-match-dto';
+import { updateMatchDto } from './dto/update-match-dto';
 
 @Injectable()
 export class MatchService {
@@ -19,6 +20,16 @@ export class MatchService {
 
   async findAll() {
     return this.prisma.match.findMany();
+  }
+
+  async update(id: string, data: updateMatchDto) {
+    return this.prisma.match.update({
+      where: { id },
+      data: {
+        teamScore: data.teamScore,
+        opponentScore: data.opponentScore,
+      },
+    });
   }
 
   async remove(id: string) {
