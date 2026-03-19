@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMatchDto } from './dto/create-match-dto';
 import { updateMatchDto } from './dto/update-match-dto';
+import { CreateMatchEventDto } from './dto/create-match-event-dto';
 
 @Injectable()
 export class MatchService {
@@ -43,6 +44,36 @@ export class MatchService {
       };
     } catch {
       throw new NotFoundException('Match not found');
+    }
+  }
+
+  async createEvent(matchId: string, dto: CreateMatchEventDto) {
+    return this.prisma.matchEvent.create({
+      data: {
+        matchId,
+        scorerId: dto.scoreId,
+        assisterId: dto.assisterId,
+      },
+    });
+  }
+
+  async findEvents(matchId: string) {
+    return this.prisma.matchEvent.findMany({
+      where: { matchId },
+      include: {
+        scorer: true,
+        assister: true,
+      },
+    });
+  }
+
+  async removeEvent(eventId: string) {
+    try {
+      await this.prisma.matchEvent.delete({
+        where: { id: eventId },
+      });
+    } catch {
+      throw new NotFoundException(' Event not found');
     }
   }
 }
