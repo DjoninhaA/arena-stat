@@ -23,6 +23,13 @@ export class MatchService {
     return this.prisma.match.findMany();
   }
 
+  async findByTeam(teamId: string) {
+    return this.prisma.match.findMany({
+      where: { teamId },
+      orderBy: { date: 'desc' },
+    });
+  }
+
   async update(id: string, data: updateMatchDto) {
     return this.prisma.match.update({
       where: { id },
@@ -53,6 +60,10 @@ export class MatchService {
         matchId,
         scorerId: dto.scoreId,
         assisterId: dto.assisterId,
+      },
+      include: {
+        scorer: true,
+        assister: true,
       },
     });
   }

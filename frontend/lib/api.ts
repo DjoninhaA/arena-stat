@@ -66,6 +66,15 @@ export interface Match {
   updatedAt: string;
 }
 
+export interface MatchEvent {
+  id: string;
+  matchId: string;
+  scorerId: string;
+  assisterId?: string;
+  scorer: Player;
+  assister?: Player;
+}
+
 // ─── API calls ────────────────────────────────────────────────────────────────
 
 export async function getTeams(): Promise<Team[]> {
@@ -120,6 +129,46 @@ export async function updateTeam(
     throw new Error(err?.message ?? "Falha ao atualizar time");
   }
   return res.json();
+}
+
+export async function updateMatch(
+  id: string,
+  data: { teamScore?: number; opponentScore?: number }
+): Promise<Match> {
+  const res = await fetch(`${API_URL}/match/${id}`, {
+    method: "PATCH",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Falha ao atualizar partida");
+  return res.json();
+}
+
+export async function getMatchEvents(matchId: string): Promise<MatchEvent[]> {
+  const res = await fetch(`${API_URL}/match/${matchId}/event`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Falha ao buscar eventos");
+  return res.json();
+}
+
+export async function createMatchEvent(
+  matchId: string,
+  data: { scoreId: string; assisterId?: string }
+): Promise<MatchEvent> {
+  const res = await fetch(`${API_URL}/match/${matchId}/event`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? "Falha ao registrar gol");
+  }
+  return res.json();
+}
+
+export async function deleteMatchEvent(matchId: string, eventId: string): Promise<void> {
+  const res = await fetch(`${API_URL}/match/${matchId}/event/${eventId}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Falha ao remover evento");
 }
 
 export async function getPlayerStats(id: string): Promise<PlayerStats> {

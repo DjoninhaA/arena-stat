@@ -26,6 +26,11 @@ export class MatchController {
     return this.MatchService.findAll();
   }
 
+  @Get('team/:teamId')
+  findByTeam(@Param('teamId') teamId: string) {
+    return this.MatchService.findByTeam(teamId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() data: updateMatchDto) {
     return this.MatchService.update(id, data);
