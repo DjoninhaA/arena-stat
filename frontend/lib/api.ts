@@ -30,9 +30,11 @@ export interface Player {
   userId?: string;
   createdAt: string;
   updatedAt: string;
-  // ⚠️ Campos pendentes (calculados via MatchEvent):
-  // goals?: number;
-  // assists?: number;
+}
+
+export interface PlayerStats {
+  goals: number;
+  assists: number;
 }
 
 export interface Team {
@@ -120,6 +122,12 @@ export async function updateTeam(
   return res.json();
 }
 
+export async function getPlayerStats(id: string): Promise<PlayerStats> {
+  const res = await fetch(`${API_URL}/player/${id}/stats`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Falha ao buscar stats do jogador");
+  return res.json();
+}
+
 export async function getMatches(teamId: string): Promise<Match[]> {
   const res = await fetch(`${API_URL}/match/team/${teamId}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Falha ao buscar partidas");
@@ -131,10 +139,11 @@ export async function createMatch(data: {
   opponentName: string;
   date: string;
 }): Promise<Match> {
-  const res = await fetch(`${API_URL}/match`, {
+  const { teamId, ...body } = data;
+  const res = await fetch(`${API_URL}/match/${teamId}`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(data),
+    body: JSON.stringify(body),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));

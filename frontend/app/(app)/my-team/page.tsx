@@ -4,18 +4,33 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Users, Trophy, UserPlus } from "lucide-react";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import { getTeams, teamLogoUrl, positionLabel, type Team, type Player } from "@/lib/api";
+import { getTeams, getPlayerStats, teamLogoUrl, positionLabel, type Team, type Player, type PlayerStats } from "@/lib/api";
 import AddPlayerModal from "@/components/add-player-modal";
 import { FootballPitch } from "@/components/football-pitch";
 
 export default function MyTeam() {
   const [team, setTeam] = useState<Team | null>(null);
+  const [stats, setStats] = useState<Record<string, PlayerStats>>({});
   const [loaded, setLoaded] = useState(false);
   const [addPlayerOpen, setAddPlayerOpen] = useState(false);
 
   useEffect(() => {
     getTeams()
-      .then((teams) => setTeam(teams[0] ?? null))
+      .then((teams) => {
+        const t = teams[0] ?? null;
+        setTeam(t);
+        if (t?.players?.length) {
+          Promise.all(
+            t.players.map((p) =>
+              getPlayerStats(p.id).then((s) => ({ id: p.id, s }))
+            )
+          ).then((results) => {
+            const map: Record<string, PlayerStats> = {};
+            results.forEach(({ id, s }) => (map[id] = s));
+            setStats(map);
+          });
+        }
+      })
       .catch(() => setTeam(null))
       .finally(() => setLoaded(true));
   }, []);
@@ -24,16 +39,21 @@ export default function MyTeam() {
     setTeam((prev) =>
       prev ? { ...prev, players: [...(prev.players ?? []), player] } : prev
     );
+    getPlayerStats(player.id)
+      .then((s) => setStats((prev) => ({ ...prev, [player.id]: s })))
+      .catch(() => {});
     setAddPlayerOpen(false);
   }
 
   const players = team?.players ?? [];
   const logo = teamLogoUrl(team?.logo);
 
+  const totalGoals = Object.values(stats).reduce((sum, s) => sum + s.goals, 0);
+
   const metrics = [
-    { label: "Jogadores",     value: players.length, icon: Users           },
-    { label: "Gols Marcados", value: "—",            icon: SportsSoccerIcon }, // ⚠️ backend pendente
-    { label: "Vitórias",      value: "—",            icon: Trophy           }, // ⚠️ backend pendente
+    { label: "Jogadores",     value: players.length,                    icon: Users           },
+    { label: "Gols Marcados", value: loaded ? totalGoals : "—",         icon: SportsSoccerIcon },
+    { label: "Vitórias",      value: "—",                               icon: Trophy           },
   ];
 
   return (
@@ -150,9 +170,16 @@ export default function MyTeam() {
                           <td className="px-2 py-2 text-xs text-gray-500 sm:px-6 sm:py-3 sm:text-sm">
                             {positionLabel[player.position] ?? player.position}
                           </td>
-                          {/* ⚠️ Campos "goals" e "assists" não existem no backend ainda */}
-                          <td className="px-2 py-2 text-center text-gray-400 sm:px-6 sm:py-3">—</td>
-                          <td className="px-2 py-2 text-center text-gray-400 sm:px-6 sm:py-3">—</td>
+                          <td className="px-2 py-2 text-center sm:px-6 sm:py-3">
+                            {stats[player.id] != null
+                              ? <span className="text-gray-900">{stats[player.id].goals}</span>
+                              : <span className="text-gray-300">—</span>}
+                          </td>
+                          <td className="px-2 py-2 text-center sm:px-6 sm:py-3">
+                            {stats[player.id] != null
+                              ? <span className="text-gray-900">{stats[player.id].assists}</span>
+                              : <span className="text-gray-300">—</span>}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
