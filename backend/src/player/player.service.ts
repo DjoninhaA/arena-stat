@@ -35,6 +35,7 @@ export class PlayerService {
     if (!player) {
       throw new NotFoundException('This Player not exist');
     }
+    return player;
   }
 
   async findByPosition(position: Position) {
@@ -77,5 +78,28 @@ export class PlayerService {
     } catch {
       throw new NotFoundException('Player not found');
     }
+  }
+
+  async findEvents(id: string) {
+    return this.prisma.matchEvent.findMany({
+      where: {
+        OR: [{ scorerId: id }, { assisterId: id }],
+      },
+      include: {
+        match: true,
+      },
+    });
+  }
+
+  async findStats(id: string) {
+    const goals = await this.prisma.matchEvent.count({
+      where: { scorerId: id },
+    });
+
+    const assists = await this.prisma.matchEvent.count({
+      where: { assisterId: id },
+    });
+
+    return { goals, assists };
   }
 }
