@@ -50,6 +50,11 @@ export default function MyTeam() {
 
   const totalGoals = Object.values(stats).reduce((sum, s) => sum + s.goals, 0);
 
+  const allGoals = Object.values(stats).map((s) => s.goals);
+  const allAssists = Object.values(stats).map((s) => s.assists);
+  const maxGoals = allGoals.length ? Math.max(...allGoals) : 0;
+  const maxAssists = allAssists.length ? Math.max(...allAssists) : 0;
+
   const metrics = [
     { label: "Jogadores",     value: players.length,                    icon: Users           },
     { label: "Gols Marcados", value: loaded ? totalGoals : "—",         icon: SportsSoccerIcon },
@@ -163,7 +168,21 @@ export default function MyTeam() {
                     <tbody className="divide-y divide-gray-200">
                       {players.map((player) => (
                         <tr key={player.id} className="hover:bg-gray-50">
-                          <td className="px-3 py-2 font-medium text-gray-900 sm:px-6 sm:py-3">{player.name}</td>
+                          <td className="px-3 py-2 font-medium text-gray-900 sm:px-6 sm:py-3">
+                            <div className="flex flex-wrap items-center gap-1">
+                              <span>{player.name}</span>
+                              {stats[player.id] != null && maxGoals > 0 && stats[player.id].goals === maxGoals && (
+                                <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                                  ⚽ Artilheiro
+                                </span>
+                              )}
+                              {stats[player.id] != null && maxAssists > 0 && stats[player.id].assists === maxAssists && (
+                                <span className="inline-flex items-center gap-0.5 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700">
+                                  🎯 Garçom
+                                </span>
+                              )}
+                            </div>
+                          </td>
                           <td className="px-2 py-2 text-center text-gray-500 sm:px-6 sm:py-3">
                             {player.number ?? <span className="text-gray-300">—</span>}
                           </td>
